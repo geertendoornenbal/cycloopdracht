@@ -20,12 +20,12 @@ void ShowImageWindow(cv::Mat aImage, std::string aWindowName)
 int main()
 {
 	// Cyclomedia test images
-	//cv::Mat lFirstImage = cv::imread( "a.tif", CV_LOAD_IMAGE_GRAYSCALE);
-	//cv::Mat lSecondImage = cv::imread( "b.tif", CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat lFirstImage = cv::imread( "a.tif", CV_LOAD_IMAGE_GRAYSCALE);
+	cv::Mat lSecondImage = cv::imread( "b.tif", CV_LOAD_IMAGE_GRAYSCALE);
 
 	// Tsukuba test images
-	cv::Mat lFirstImage = cv::imread( "test_left.tif", CV_LOAD_IMAGE_GRAYSCALE);
-	cv::Mat lSecondImage = cv::imread( "test_right.tif", CV_LOAD_IMAGE_GRAYSCALE);
+	//cv::Mat lFirstImage = cv::imread( "test_left.tif", CV_LOAD_IMAGE_GRAYSCALE);
+	//cv::Mat lSecondImage = cv::imread( "test_right.tif", CV_LOAD_IMAGE_GRAYSCALE);
 
 	if (lFirstImage.empty() || lSecondImage.empty())
 	{
@@ -38,19 +38,19 @@ int main()
 	ShowImageWindow(lFirstImage, "First image");
 	ShowImageWindow(lSecondImage, "Second image");
 
-	int lWindowSize = 4;
-	int lMaxDisparity = 16;
+	int lWindowSize = 32;
+	int lMaxDisparity = 700;
 
 	// With factory
 	//MatchCostFactory lFactory(MatchCostFactory::NCC);
 	//lMatcher.MatchFactory(lWindowSize, lMaxDisparity, lFactory);
 
 	// With template
-	lMatcher.MatchTemplate<MatchCostSSD>(lWindowSize, lMaxDisparity);
+	lMatcher.MatchTemplate<MatchCostNCC>(lWindowSize, lMaxDisparity);
 
 	cv::Mat lDisparityImageResult = lMatcher.ComputeResultImage();
 
-	imwrite("result_SAD_window32_maxdisparity700.tiff", lDisparityImageResult);
+	imwrite("result_Cyclo_NCC_window32_maxdisparity700.tiff", lDisparityImageResult);
 	ShowImageWindow(lDisparityImageResult,"Disparity image");
 	cv::waitKey(0);
 
